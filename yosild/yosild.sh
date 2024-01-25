@@ -14,8 +14,10 @@ distro_desc="Your simple Linux distro"
 distro_codename="chinchilla"
 telnetd_enabled="true"
 hyperv_support="false"
-kernel="https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.7.1.tar.xz"
-busybox="https://busybox.net/downloads/busybox-1.36.1.tar.bz2"
+KERNEL_VERSION=6.7.1
+BUSYBOX_VERSION=1.36.1
+kernel="http://kernel.org/pub/linux/kernel/v6.x/linux-${KERNEL_VERSION}.tar.xz"
+busybox="http://busybox.net/downloads/busybox-${BUSYBOX_VERSION}.tar.bz2"
 # ---------------------------------------
 
 if [ $(id -u) -ne 0 ]; then
@@ -444,7 +446,20 @@ chmod 644  etc/passwd etc/group etc/hostname etc/shells etc/hosts etc/fstab\
 echo "** Building initramfs"
 find . | cpio -H newc -o 2> /dev/null | gzip > /mnt/boot/$initrd_file
 cd ..
-chmod 400 /mnt/boot/$initrd_file
+chmod 400 /mnt/boot/$kernel_file
+
+# cd /mnt/boot
+# echo "default $kernel_file initrd=${initrd_file}" > ./isolinux.cfg
+# xorriso \
+#   -as mkisofs \
+#   -o ../minimal_linux.iso \
+#   -b isolinux.bin \
+#   -c boot.cat \
+#   -no-emul-boot \
+#   -boot-load-size 4 \
+#   -boot-info-table \
+#   ./
+
 rm -r rootfs
 umount /mnt
 printf "\n** all done **\n\n"
