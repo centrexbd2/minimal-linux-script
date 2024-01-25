@@ -447,19 +447,7 @@ echo "** Building initramfs"
 find . | cpio -H newc -o 2> /dev/null | gzip > /mnt/boot/$initrd_file
 cd ..
 chmod 400 /mnt/boot/$kernel_file
-
-# cd /mnt/boot
-# echo "default $kernel_file initrd=${initrd_file}" > ./isolinux.cfg
-# xorriso \
-#   -as mkisofs \
-#   -o ../minimal_linux.iso \
-#   -b isolinux.bin \
-#   -c boot.cat \
-#   -no-emul-boot \
-#   -boot-load-size 4 \
-#   -boot-info-table \
-#   ./
-
+grub-mkrescue -o min-linux.iso /mnt
 rm -r rootfs
 umount /mnt
 printf "\n** all done **\n\n"
