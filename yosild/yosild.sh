@@ -449,6 +449,6 @@ cd ..
 chmod 400 /mnt/boot/$kernel_file
 grub-mkrescue -o min-linux.iso /mnt
 rm -r rootfs
-umount /mnt
+# umount /mnt
 printf "\n** all done **\n\n"
 
